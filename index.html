@@ -12,21 +12,7 @@
     background: #0D0A09;
     font-family: 'Cormorant Garamond', serif;
     overflow-x: hidden;
-    cursor: none;
   }
-
-  /* Custom cursor */
-  .cursor {
-    width: 6px; height: 6px;
-    background: #8B2020;
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: width 0.2s, height 0.2s;
-  }
-  .cursor.hover { width: 20px; height: 20px; background: rgba(139,32,32,0.4); border: 1px solid #8B2020; }
 
   /* HERO — full viewport */
   .hero {
@@ -98,7 +84,7 @@
     text-transform: uppercase;
     text-decoration: none;
     padding: 13px 34px;
-    cursor: none;
+    cursor: pointer;
     display: inline-block;
     transition: all 0.3s ease;
     white-space: nowrap;
@@ -109,8 +95,37 @@
     color: #E8E0D4;
     border: 1px solid rgba(139,32,32,0.6);
     backdrop-filter: blur(6px);
+    box-shadow: 0 0 12px rgba(139,32,32,0.5), 0 0 28px rgba(139,32,32,0.25);
+    overflow: hidden;
+    position: relative;
   }
-  .btn-primary:hover { background: #A83030; letter-spacing: 0.52em; }
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -75%;
+    width: 50%;
+    height: 200%;
+    background: linear-gradient(
+      100deg,
+      transparent 0%,
+      rgba(232,224,212,0.08) 45%,
+      rgba(232,224,212,0.18) 50%,
+      rgba(232,224,212,0.08) 55%,
+      transparent 100%
+    );
+    animation: btnShine 3.5s ease-in-out infinite;
+  }
+  @keyframes btnShine {
+    0%   { left: -75%; }
+    40%  { left: 125%; }
+    100% { left: 125%; }
+  }
+  .btn-primary:hover {
+    background: #A83030;
+    letter-spacing: 0.52em;
+    box-shadow: 0 0 18px rgba(168,48,48,0.6), 0 0 40px rgba(168,48,48,0.3);
+  }
 
   .btn-ghost {
     background: rgba(13,10,9,0.4);
@@ -124,13 +139,19 @@
   footer {
     padding: 44px 48px;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    text-align: center;
     border-top: 1px solid rgba(139,32,32,0.18);
-    flex-wrap: wrap;
     gap: 20px;
     opacity: 0;
-    animation: fadeUp 0.8s ease 2s forwards;
+    animation: fadeUpFooter 0.8s ease 2s forwards;
+  }
+
+  @keyframes fadeUpFooter {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 
   .footer-address p {
@@ -143,7 +164,7 @@
   .footer-links {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: center;
     gap: 8px;
   }
 
@@ -192,7 +213,7 @@
     border: none;
     color: rgba(232,224,212,0.3);
     font-size: 22px;
-    cursor: none;
+    cursor: pointer;
     font-family: 'Cormorant Garamond', serif;
     line-height: 1;
     transition: color 0.2s;
@@ -235,7 +256,6 @@
     outline: none;
     margin-bottom: 28px;
     text-align: center;
-    cursor: none;
     transition: border-color 0.3s;
   }
   .modal-input:focus { border-bottom-color: rgba(232,224,212,0.45); }
@@ -251,10 +271,33 @@
     font-size: 11px;
     letter-spacing: 0.4em;
     text-transform: uppercase;
-    cursor: none;
-    transition: background 0.3s;
+    cursor: pointer;
+    transition: background 0.3s, box-shadow 0.3s;
+    box-shadow: 0 0 12px rgba(139,32,32,0.5), 0 0 28px rgba(139,32,32,0.25);
+    overflow: hidden;
+    position: relative;
   }
-  .modal-submit:hover { background: #A83030; }
+  .modal-submit::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -75%;
+    width: 50%;
+    height: 200%;
+    background: linear-gradient(
+      100deg,
+      transparent 0%,
+      rgba(232,224,212,0.08) 45%,
+      rgba(232,224,212,0.18) 50%,
+      rgba(232,224,212,0.08) 55%,
+      transparent 100%
+    );
+    animation: btnShine 3.5s ease-in-out infinite;
+  }
+  .modal-submit:hover {
+    background: #A83030;
+    box-shadow: 0 0 18px rgba(168,48,48,0.6), 0 0 40px rgba(168,48,48,0.3);
+  }
 
   .modal-thanks { display: none; padding: 12px 0; }
   .modal-thanks p:first-child {
@@ -286,8 +329,14 @@
     footer {
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       text-align: center;
       padding: 36px 24px;
+    }
+
+    .footer-address {
+      width: 100%;
+      text-align: center;
     }
 
     .footer-links {
@@ -312,14 +361,11 @@
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
-
 <!-- HERO -->
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-cta">
-    <a href="#" class="btn btn-primary" id="signup-btn">Sign Up</a>
-    <a href="mailto:reservations@thirtynine.co.uk" class="btn btn-ghost">Book a Table</a>
+    <a href="#" class="btn btn-primary" id="signup-btn">Join the List</a>
   </div>
 </section>
 
@@ -343,8 +389,14 @@
     <h2 class="modal-title">THIRTY<em>nine</em></h2>
     <p class="modal-sub">Opening soon above Maddox, Mayfair.<br>Join the list for exclusive early access.</p>
     <div id="signup-form">
-      <input type="email" id="email-input" class="modal-input" placeholder="your@email.com">
-      <button class="modal-submit" onclick="submitEmail()">Join the List</button>
+      <form name="signup" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="signup-netlify-form">
+        <input type="hidden" name="form-name" value="signup">
+        <p style="display:none"><label>Don't fill this: <input name="bot-field"></label></p>
+        <input type="text" name="full-name" class="modal-input" placeholder="Full Name" required>
+        <input type="tel" name="phone" class="modal-input" placeholder="Phone Number" required>
+        <input type="email" name="email" class="modal-input" placeholder="Email Address" required>
+        <button type="submit" class="modal-submit">Join the List</button>
+      </form>
     </div>
     <div class="modal-thanks" id="signup-thanks">
       <p>Thank you.</p>
@@ -354,17 +406,6 @@
 </div>
 
 <script>
-  // Cursor
-  const cursor = document.getElementById('cursor');
-  document.addEventListener('mousemove', e => {
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top  = e.clientY + 'px';
-  });
-  document.querySelectorAll('a, button').forEach(el => {
-    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-  });
-
   // Modal open
   document.getElementById('signup-btn').addEventListener('click', e => {
     e.preventDefault();
@@ -387,23 +428,23 @@
   });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-  // Submit
-  function submitEmail() {
-    const val = document.getElementById('email-input').value.trim();
-    const input = document.getElementById('email-input');
-    if (!val || !val.includes('@') || !val.includes('.')) {
-      input.style.borderBottomColor = '#8B2020';
-      input.focus();
-      setTimeout(() => input.style.borderBottomColor = '', 2000);
-      return;
+  // Submit via AJAX
+  document.getElementById('signup-netlify-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const form = e.target;
+    try {
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(new FormData(form)).toString()
+      });
+      if (response.ok) {
+        document.getElementById('signup-form').style.display = 'none';
+        document.getElementById('signup-thanks').style.display = 'block';
+      }
+    } catch (err) {
+      // silently fail
     }
-    document.getElementById('signup-form').style.display  = 'none';
-    document.getElementById('signup-thanks').style.display = 'block';
-  }
-
-  // Enter key in email field
-  document.getElementById('email-input').addEventListener('keydown', e => {
-    if (e.key === 'Enter') submitEmail();
   });
 </script>
 </body>
